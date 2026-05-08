@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { messages } = require("./index.js");
+const { insertMessage } = require("../models/query");
 
 const newRouter = Router();
 
@@ -8,12 +8,9 @@ newRouter.get("/", (req, res) => {
 });
 
 newRouter.post("/", (req, res) => {
-  messages.push({
-    text: req.body.text,
-    user: req.body.user,
-    added: new Date(),
+  insertMessage(req.body.text, req.body.user).then(() => {
+    res.redirect("/");
   });
-  res.redirect("/");
 });
 
 module.exports = newRouter;
